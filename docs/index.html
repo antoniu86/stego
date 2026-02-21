@@ -24,6 +24,11 @@
             backdrop-filter: blur(24px);
             border: 1px solid rgba(99, 102, 241, 0.2);
         }
+        .glass-card-warn {
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(24px);
+            border: 1px solid rgba(234, 179, 8, 0.3);
+        }
         .hero-glow {
             box-shadow: 0 0 100px 10px rgba(79, 70, 229, 0.15);
         }
@@ -31,35 +36,41 @@
             font-family: 'Fira Code', 'Courier New', monospace;
             letter-spacing: -0.05em;
         }
+        .section-divider {
+            border-color: rgba(255,255,255,0.05);
+        }
     </style>
 </head>
 <body class="text-slate-200 antialiased">
 
     <canvas id="data-canvas"></canvas>
 
+    <!-- Nav -->
     <nav class="max-w-6xl mx-auto px-6 py-8 flex justify-between items-center relative z-10">
         <div class="text-2xl font-black tracking-tighter text-white flex items-center gap-2">
             <i class="fas fa-user-secret text-indigo-500"></i> stego
         </div>
         <div class="flex items-center gap-8">
             <a href="https://github.com/antoniu86/stego" class="bg-indigo-600 text-white px-5 py-2 rounded-lg font-bold text-sm hover:bg-indigo-500 transition shadow-lg shadow-indigo-500/30">
-                View Project
+                <i class="fab fa-github mr-2"></i>View on GitHub
             </a>
         </div>
     </nav>
 
     <main class="max-w-5xl mx-auto px-6 pt-12 pb-24 relative z-10">
-        
+
+        <!-- Hero -->
         <section class="mb-16">
             <h1 class="text-6xl md:text-8xl font-bold mb-8 tracking-tighter text-white leading-none">
                 Hide. Encrypt.<br><span class="text-indigo-500">Protect.</span>
             </h1>
             <p class="text-xl text-slate-400 max-w-2xl mb-10 leading-relaxed font-light">
-                A lightweight tool to append encrypted data to any carrier file. 
+                A lightweight CLI tool that appends AES-256 encrypted data to any carrier file.
                 Images, videos, and PDFs remain fully functional while hiding your secrets.
             </p>
         </section>
 
+        <!-- Terminal + Feature cards -->
         <div class="grid lg:grid-cols-6 gap-8 items-stretch mb-20">
             <div class="lg:col-span-4 glass-card rounded-xl overflow-hidden shadow-2xl hero-glow flex flex-col">
                 <div class="bg-slate-800/40 px-5 py-3 border-b border-white/5 flex justify-between items-center">
@@ -71,16 +82,17 @@
                 </div>
                 <div class="p-8 font-mono-tight text-sm md:text-base leading-relaxed flex-grow">
                     <div class="mb-8">
-                        <span class="text-indigo-400 font-bold">$ stego hide</span> photo.jpg data/ <span class="text-indigo-400">-o</span> vault.jpg
-                        <div class="text-slate-500 text-xs mt-1">> Enter encryption password...</div>
+                        <span class="text-indigo-400 font-bold">$ stego hide</span> photo.jpg secret.txt <span class="text-indigo-400">-o</span> hidden.jpg
+                        <div class="text-slate-500 text-xs mt-1">&gt; Enter encryption password:</div>
+                        <div class="text-slate-500 text-xs">&gt; Confirm encryption password:</div>
                     </div>
                     <div class="mb-8">
-                        <span class="text-indigo-400 font-bold">$ stego scan</span> vault.jpg
-                        <div class="text-emerald-500 text-xs mt-1">> Payload detected (AES-256)</div>
+                        <span class="text-indigo-400 font-bold">$ stego scan</span> hidden.jpg
+                        <div class="text-emerald-500 text-xs mt-1">&gt; Payload detected (AES-256-CBC)</div>
                     </div>
                     <div>
-                        <span class="text-indigo-400 font-bold">$ stego show</span> vault.jpg <span class="text-indigo-400">-o</span> ./out/
-                        <div class="text-slate-500 text-xs mt-1">> Extraction complete. SHA-256 verified.</div>
+                        <span class="text-indigo-400 font-bold">$ stego show</span> hidden.jpg <span class="text-indigo-400">-o</span> recovered/
+                        <div class="text-slate-500 text-xs mt-1">&gt; Extraction complete. SHA-256 verified.</div>
                     </div>
                 </div>
             </div>
@@ -88,23 +100,215 @@
             <div class="lg:col-span-2 space-y-4 flex flex-col">
                 <div class="glass-card p-6 rounded-xl flex-grow border-l-4 border-l-indigo-500">
                     <h3 class="font-bold text-white mb-2">AES-256 Security</h3>
-                    <p class="text-xs text-slate-400 leading-normal italic">PBKDF2-HMAC-SHA256 with 100,000 iterations for key derivation.</p>
+                    <p class="text-xs text-slate-400 leading-normal">PBKDF2-HMAC-SHA256, 100,000 iterations, random 16-byte salt per encryption.</p>
                 </div>
                 <div class="glass-card p-6 rounded-xl flex-grow border-l-4 border-l-emerald-500">
                     <h3 class="font-bold text-white mb-2">Universal Carriers</h3>
-                    <p class="text-xs text-slate-400 leading-normal">Works with any file format—JPG, MP4, PDF, and more.</p>
+                    <p class="text-xs text-slate-400 leading-normal">Works with any file format — JPG, MP4, PDF, and more.</p>
                 </div>
                 <div class="glass-card p-6 rounded-xl flex-grow border-l-4 border-l-amber-500">
                     <h3 class="font-bold text-white mb-2">Non-Destructive</h3>
-                    <p class="text-xs text-slate-400 leading-normal">The original carrier content is never modified or corrupted.</p>
+                    <p class="text-xs text-slate-400 leading-normal">Data is appended after the carrier's original bytes. The file still opens normally.</p>
                 </div>
             </div>
         </div>
+
+        <!-- Installation -->
+        <section class="mb-20">
+            <h2 class="text-3xl font-bold text-white mb-8">Installation</h2>
+            <div class="grid md:grid-cols-2 gap-6">
+
+                <div class="glass-card rounded-xl p-6">
+                    <div class="flex items-center gap-3 mb-4">
+                        <span class="bg-indigo-500/20 text-indigo-400 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">System-wide</span>
+                        <span class="text-slate-500 text-xs">requires sudo</span>
+                    </div>
+                    <p class="text-slate-400 text-sm mb-4">Installs to <code class="text-indigo-400">/usr/local/share/stego/</code> and registers the <code class="text-indigo-400">stego</code> command in <code class="text-indigo-400">/usr/local/bin/</code>. If already installed, it prompts to update.</p>
+                    <div class="bg-slate-900/60 rounded-lg p-4 font-mono-tight text-sm">
+                        <span class="text-slate-500">$</span> <span class="text-white">sudo bash install.sh</span>
+                    </div>
+                    <p class="text-slate-500 text-xs mt-4">To uninstall:</p>
+                    <div class="bg-slate-900/60 rounded-lg p-4 font-mono-tight text-xs mt-2 space-y-1">
+                        <div><span class="text-slate-500">$</span> <span class="text-white">sudo rm -rf /usr/local/share/stego</span></div>
+                        <div><span class="text-slate-500">$</span> <span class="text-white">sudo rm -f /usr/local/bin/stego</span></div>
+                    </div>
+                </div>
+
+                <div class="glass-card rounded-xl p-6">
+                    <div class="flex items-center gap-3 mb-4">
+                        <span class="bg-emerald-500/20 text-emerald-400 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">No install</span>
+                        <span class="text-slate-500 text-xs">any user</span>
+                    </div>
+                    <p class="text-slate-400 text-sm mb-4">Run directly from the cloned repo — no sudo needed. Only one dependency required.</p>
+                    <div class="bg-slate-900/60 rounded-lg p-4 font-mono-tight text-sm space-y-2">
+                        <div><span class="text-slate-500">$</span> <span class="text-white">pip3 install cryptography</span></div>
+                        <div><span class="text-slate-500">$</span> <span class="text-white">python3 cli/cli.py --help</span></div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Commands -->
+        <section class="mb-20">
+            <h2 class="text-3xl font-bold text-white mb-8">Commands</h2>
+            <div class="space-y-6">
+
+                <!-- hide -->
+                <div class="glass-card rounded-xl p-6">
+                    <div class="flex items-center gap-3 mb-4">
+                        <span class="text-indigo-400 font-mono font-bold text-lg">stego hide</span>
+                        <span class="text-slate-500 text-sm">— encrypt and embed data in a carrier file</span>
+                    </div>
+                    <div class="bg-slate-900/60 rounded-lg p-4 font-mono-tight text-sm space-y-2 mb-4">
+                        <div>
+                            <span class="text-slate-500"># Hide a single file</span><br>
+                            <span class="text-slate-400">$</span> <span class="text-white">stego hide photo.jpg secret.txt -o hidden.jpg</span>
+                        </div>
+                        <div class="pt-2">
+                            <span class="text-slate-500"># Hide an entire folder</span><br>
+                            <span class="text-slate-400">$</span> <span class="text-white">stego hide photo.jpg secrets/ -o hidden.jpg</span>
+                        </div>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm text-left">
+                            <thead><tr class="text-slate-500 text-xs uppercase border-b border-white/5">
+                                <th class="pb-2 pr-6">Argument</th><th class="pb-2">Description</th>
+                            </tr></thead>
+                            <tbody class="font-mono-tight text-xs text-slate-400 divide-y divide-white/5">
+                                <tr><td class="py-2 pr-6 text-indigo-400">carrier</td><td class="py-2">The carrier file (image, video, PDF, etc.)</td></tr>
+                                <tr><td class="py-2 pr-6 text-indigo-400">data</td><td class="py-2">File or folder to hide</td></tr>
+                                <tr><td class="py-2 pr-6 text-indigo-400">-o FILE</td><td class="py-2">Output file (required)</td></tr>
+                                <tr><td class="py-2 pr-6 text-indigo-400">-p PASSWORD</td><td class="py-2">Password — skips confirmation prompt, use with care</td></tr>
+                                <tr><td class="py-2 pr-6 text-indigo-400">-v</td><td class="py-2">Verbose output</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="mt-4 bg-indigo-500/10 border border-indigo-500/20 rounded-lg p-4 font-mono-tight text-xs text-slate-400">
+                        <span class="text-indigo-400 font-bold block mb-1">Password confirmation</span>
+                        Without <code class="text-white">-p</code>, you will be prompted to enter and confirm:<br>
+                        <span class="text-white block mt-2">&gt; Enter encryption password:<br>&gt; Confirm encryption password:</span>
+                    </div>
+                </div>
+
+                <!-- show -->
+                <div class="glass-card rounded-xl p-6">
+                    <div class="flex items-center gap-3 mb-4">
+                        <span class="text-emerald-400 font-mono font-bold text-lg">stego show</span>
+                        <span class="text-slate-500 text-sm">— decrypt and extract hidden data</span>
+                    </div>
+                    <div class="bg-slate-900/60 rounded-lg p-4 font-mono-tight text-sm mb-4">
+                        <span class="text-slate-400">$</span> <span class="text-white">stego show hidden.jpg -o recovered/</span>
+                    </div>
+                    <p class="text-slate-400 text-sm mb-3">The output folder will contain:</p>
+                    <div class="bg-slate-900/60 rounded-lg p-4 font-mono-tight text-xs text-slate-400 mb-4">
+                        recovered/<br>
+                        <span class="text-slate-600">├──</span> data/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="text-slate-500">← your extracted files</span><br>
+                        <span class="text-slate-600">└──</span> original/&nbsp;<span class="text-slate-500">← clean carrier file</span>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm text-left">
+                            <thead><tr class="text-slate-500 text-xs uppercase border-b border-white/5">
+                                <th class="pb-2 pr-6">Flag</th><th class="pb-2">Description</th>
+                            </tr></thead>
+                            <tbody class="font-mono-tight text-xs text-slate-400 divide-y divide-white/5">
+                                <tr><td class="py-2 pr-6 text-emerald-400">-o FOLDER</td><td class="py-2">Output folder (required)</td></tr>
+                                <tr><td class="py-2 pr-6 text-emerald-400">-p PASSWORD</td><td class="py-2">Password (prompted if omitted)</td></tr>
+                                <tr><td class="py-2 pr-6 text-emerald-400">-v</td><td class="py-2">Verbose output</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- scan -->
+                <div class="glass-card rounded-xl p-6">
+                    <div class="flex items-center gap-3 mb-4">
+                        <span class="text-amber-400 font-mono font-bold text-lg">stego scan</span>
+                        <span class="text-slate-500 text-sm">— detect hidden data in files</span>
+                    </div>
+                    <div class="bg-slate-900/60 rounded-lg p-4 font-mono-tight text-sm space-y-2 mb-4">
+                        <div><span class="text-slate-400">$</span> <span class="text-white">stego scan hidden.jpg</span></div>
+                        <div><span class="text-slate-400">$</span> <span class="text-white">stego scan ~/Downloads -r -v</span></div>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm text-left">
+                            <thead><tr class="text-slate-500 text-xs uppercase border-b border-white/5">
+                                <th class="pb-2 pr-6">Flag</th><th class="pb-2">Description</th>
+                            </tr></thead>
+                            <tbody class="font-mono-tight text-xs text-slate-400 divide-y divide-white/5">
+                                <tr><td class="py-2 pr-6 text-amber-400">-r</td><td class="py-2">Scan subdirectories recursively</td></tr>
+                                <tr><td class="py-2 pr-6 text-amber-400">-a</td><td class="py-2">Include hidden files (dotfiles)</td></tr>
+                                <tr><td class="py-2 pr-6 text-amber-400">-v</td><td class="py-2">Verbose output</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Warning -->
+        <section class="mb-20">
+            <div class="glass-card-warn rounded-xl p-6">
+                <div class="flex items-start gap-4">
+                    <i class="fas fa-triangle-exclamation text-yellow-400 text-xl mt-1"></i>
+                    <div>
+                        <h3 class="font-bold text-white text-lg mb-3">Do not modify the output file</h3>
+                        <p class="text-slate-400 text-sm mb-4">Hidden data is appended after the carrier's original bytes. Any operation that rewrites the file will destroy it.</p>
+                        <div class="grid md:grid-cols-2 gap-4 text-xs">
+                            <div>
+                                <p class="text-red-400 font-bold mb-2 uppercase tracking-wider">Unsafe — destroys hidden data</p>
+                                <ul class="text-slate-400 space-y-1">
+                                    <li><i class="fas fa-times text-red-500 mr-2"></i>Opening in an image editor and saving</li>
+                                    <li><i class="fas fa-times text-red-500 mr-2"></i>Compressing or optimising the file</li>
+                                    <li><i class="fas fa-times text-red-500 mr-2"></i>Converting to another format</li>
+                                    <li><i class="fas fa-times text-red-500 mr-2"></i>Uploading to social media</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <p class="text-emerald-400 font-bold mb-2 uppercase tracking-wider">Safe — preserves hidden data</p>
+                                <ul class="text-slate-400 space-y-1">
+                                    <li><i class="fas fa-check text-emerald-500 mr-2"></i>Copying or moving the file (<code>cp</code>, <code>mv</code>)</li>
+                                    <li><i class="fas fa-check text-emerald-500 mr-2"></i>Viewing without saving</li>
+                                    <li><i class="fas fa-check text-emerald-500 mr-2"></i>Transferring via USB, SCP, rsync</li>
+                                    <li><i class="fas fa-check text-emerald-500 mr-2"></i>Running <code>stego scan</code> to verify</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Security notes -->
+        <section class="mb-20">
+            <h2 class="text-3xl font-bold text-white mb-8">Security notes</h2>
+            <div class="grid md:grid-cols-2 gap-4 text-sm text-slate-400">
+                <div class="glass-card rounded-xl p-5 flex gap-3">
+                    <i class="fas fa-lock text-indigo-400 mt-0.5"></i>
+                    <div><span class="text-white font-semibold">Encryption: </span>AES-256-CBC with PKCS7 padding.</div>
+                </div>
+                <div class="glass-card rounded-xl p-5 flex gap-3">
+                    <i class="fas fa-key text-indigo-400 mt-0.5"></i>
+                    <div><span class="text-white font-semibold">Key derivation: </span>PBKDF2-HMAC-SHA256, 100,000 iterations, random 16-byte salt.</div>
+                </div>
+                <div class="glass-card rounded-xl p-5 flex gap-3">
+                    <i class="fas fa-shield-halved text-indigo-400 mt-0.5"></i>
+                    <div><span class="text-white font-semibold">Integrity: </span>SHA-256 checksum verified on every extraction.</div>
+                </div>
+                <div class="glass-card rounded-xl p-5 flex gap-3">
+                    <i class="fas fa-eye text-amber-400 mt-0.5"></i>
+                    <div><span class="text-white font-semibold">Detectability: </span>Hidden data <em>is</em> detectable with <code class="text-indigo-400">stego scan</code>. This tool provides encryption, not invisibility.</div>
+                </div>
+            </div>
+        </section>
+
     </main>
 
-    <footer class="max-w-5xl mx-auto px-6 py-12 border-t border-white/5 flex flex-col md:flex-row justify-between items-center text-slate-500 text-sm">
-        <p class="mb-4 md:mb-0">Created by <a href="https://github.com/antoniu86" class="text-white hover:text-indigo-400">antoniu86</a></p>
-     </footer>
+    <footer class="max-w-5xl mx-auto px-6 py-12 border-t border-white/5 flex flex-col md:flex-row justify-between items-center text-slate-500 text-sm gap-4">
+        <p>Created by <a href="https://github.com/antoniu86" class="text-white hover:text-indigo-400 transition">antoniu86</a></p>
+        <p class="text-slate-600 italic text-xs">GUI interface — work in progress.</p>
+    </footer>
 
     <script>
         const canvas = document.getElementById('data-canvas');
@@ -118,23 +322,19 @@
             width = canvas.width = window.innerWidth;
             height = canvas.height = window.innerHeight;
             streams = [];
-            
-            // Increased density: one stream every 20px
+
             for (let i = 0; i < height / 20; i++) {
-                // Determine direction based on row (even/odd) or random
                 const isRight = Math.random() > 0.5;
                 streams.push({
                     x: Math.random() * width,
                     y: i * 20,
                     speed: (Math.random() * 0.5 + 0.2) * (isRight ? 1 : -1),
-                    // Long strings: 60 to 120 characters
                     length: Math.floor(Math.random() * 60) + 60,
-                    opacity: Math.random() * 0.08 + 0.02, // Very subtle background
+                    opacity: Math.random() * 0.08 + 0.02,
                     content: ""
                 });
-                
-                // Pre-generate initial string content
-                for(let j=0; j<streams[i].length; j++) {
+
+                for (let j = 0; j < streams[i].length; j++) {
                     streams[i].content += chars.charAt(Math.floor(Math.random() * chars.length));
                 }
             }
@@ -143,14 +343,13 @@
         function draw() {
             ctx.fillStyle = '#020617';
             ctx.fillRect(0, 0, width, height);
-            
+
             ctx.font = '10px monospace';
 
             streams.forEach(stream => {
                 ctx.fillStyle = `rgba(99, 102, 241, ${stream.opacity})`;
-                
-                // Occasionally mutate characters to look "active"
-                if(Math.random() > 0.95) {
+
+                if (Math.random() > 0.95) {
                     const pos = Math.floor(Math.random() * stream.length);
                     const newChar = chars.charAt(Math.floor(Math.random() * chars.length));
                     stream.content = stream.content.substring(0, pos) + newChar + stream.content.substring(pos + 1);
@@ -158,11 +357,9 @@
 
                 ctx.fillText(stream.content, stream.x, stream.y);
 
-                // Movement
                 stream.x += stream.speed;
 
-                // Wrap around with buffer for long string length
-                const totalWidth = stream.length * 6; // Rough estimate of pixel width
+                const totalWidth = stream.length * 6;
                 if (stream.x > width) stream.x = -totalWidth;
                 if (stream.x < -totalWidth) stream.x = width;
             });
