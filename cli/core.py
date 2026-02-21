@@ -92,10 +92,13 @@ class StegoCore:
         padding_length = padded_data[-1]
         return padded_data[:-padding_length]
 
-    def create_tarball(self, source_dir: Path, output_file: Path) -> None:
-        """Create a tar.gz archive from a directory"""
+    def create_tarball(self, source: Path, output_file: Path) -> None:
+        """Create a tar.gz archive from a file or directory"""
         with tarfile.open(output_file, 'w:gz') as tar:
-            tar.add(source_dir, arcname='data')
+            if source.is_file():
+                tar.add(source, arcname=f'data/{source.name}')
+            else:
+                tar.add(source, arcname='data')
 
     def extract_tarball(self, tarball_path: Path, extract_to: Path) -> None:
         """Extract tar.gz archive, guarding against path traversal"""
@@ -116,7 +119,7 @@ class StegoCore:
                 tar.extractall(extract_to)
 
     def hide_data(self,
-                  data_folder: Path,
+                  data_path: Path,
                   carrier_file: Path,
                   output_file: Path,
                   password: str,
@@ -125,7 +128,7 @@ class StegoCore:
         Hide encrypted data in a carrier file.
 
         Args:
-            data_folder: Folder containing files to hide
+            data_path: File or folder to hide
             carrier_file: File to use as carrier
             output_file: Where to save the result
             password: Encryption password
@@ -134,8 +137,8 @@ class StegoCore:
         Returns:
             Dictionary with statistics
         """
-        if not data_folder.is_dir():
-            raise StegoError(f"Data folder not found: {data_folder}")
+        if not data_path.exists():
+            raise StegoError(f"Data path not found: {data_path}")
         if not carrier_file.exists():
             raise StegoError(f"Carrier file not found: {carrier_file}")
 
@@ -147,7 +150,7 @@ class StegoCore:
             if progress_callback:
                 progress_callback(1, "Creating archive...")
 
-            self.create_tarball(data_folder, temp_tar)
+            self.create_tarball(data_path, temp_tar)
 
             with open(temp_tar, 'rb') as f:
                 tar_data = f.read()
@@ -184,7 +187,7 @@ class StegoCore:
                 'carrier_size': len(carrier_data),
                 'hidden_size': len(hidden_structure),
                 'output_size': len(carrier_data) + len(hidden_structure),
-                'files_count': sum(1 for _ in data_folder.rglob('*') if _.is_file())
+                'files_count': 1 if data_path.is_file() else sum(1 for _ in data_path.rglob('*') if _.is_file())
             }
 
         finally:

@@ -67,46 +67,20 @@ def hide_command(args):
     """Handle hide command"""
     core = StegoCore()
 
-    base_folder = args.folder
-    data_dir = base_folder / 'data'
-    original_dir = base_folder / 'original'
+    carrier_file = args.carrier
+    data_path = args.data
 
-    # Validate structure
-    if not data_dir.exists():
-        print(f"Error: Data directory not found: {data_dir}", file=sys.stderr)
-        print(f"Expected structure:", file=sys.stderr)
-        print(f"  {base_folder}/", file=sys.stderr)
-        print(f"  ├── data/       (files to hide)", file=sys.stderr)
-        print(f"  └── original/   (one carrier file)", file=sys.stderr)
+    if not carrier_file.is_file():
+        print(f"Error: Carrier file not found: {carrier_file}", file=sys.stderr)
         return 1
 
-    if not original_dir.exists():
-        print(f"Error: Original directory not found: {original_dir}", file=sys.stderr)
+    if not data_path.exists():
+        print(f"Error: Data path not found: {data_path}", file=sys.stderr)
         return 1
-
-    # Find carrier file
-    carrier_files = list(original_dir.glob('*'))
-    carrier_files = [f for f in carrier_files if f.is_file()]
-
-    system_files = {'.DS_Store', 'Thumbs.db', 'desktop.ini', '.gitkeep', '.gitignore'}
-    carrier_files = [f for f in carrier_files if f.name not in system_files and not f.name.startswith('.')]
-
-    if not carrier_files:
-        print(f"Error: No carrier file found in {original_dir}", file=sys.stderr)
-        return 1
-
-    if len(carrier_files) > 1:
-        print(f"Error: Multiple files found in {original_dir}:", file=sys.stderr)
-        for f in carrier_files:
-            print(f"  - {f.name}", file=sys.stderr)
-        print(f"\nPlease keep only one carrier file.", file=sys.stderr)
-        return 1
-
-    carrier_file = carrier_files[0]
 
     if args.verbose:
-        print(f"[*] Carrier file: {carrier_file.name}")
-        print(f"[*] Data directory: {data_dir}")
+        print(f"[*] Carrier file: {carrier_file}")
+        print(f"[*] Data: {data_path}")
 
     # Get password
     if args.password:
@@ -127,7 +101,7 @@ def hide_command(args):
             print(f"[*] Hiding data...")
 
         stats = core.hide_data(
-            data_folder=data_dir,
+            data_path=data_path,
             carrier_file=carrier_file,
             output_file=args.output,
             password=password,
@@ -302,23 +276,18 @@ Examples:
 
     # Hide command
     hide_parser = subparsers.add_parser('hide',
-                                        help='Hide encrypted data in a file',
+                                        help='Hide encrypted data in a carrier file',
                                         formatter_class=argparse.RawDescriptionHelpFormatter,
                                         description="""Hide encrypted data in a carrier file.
 
-Required folder structure:
-  your_folder/
-  ├── data/        Files you want to hide (can contain subdirectories)
-  └── original/    ONE carrier file (image, video, document, etc.)
-
-Example:
-  mkdir -p project/data project/original
-  cp secret.txt project/data/
-  cp photo.jpg project/original/
-  stego hide project -o hidden.jpg
+Examples:
+  stego hide photo.jpg secret.txt -o hidden.jpg
+  stego hide photo.jpg secrets/ -o hidden.jpg
 """)
-    hide_parser.add_argument('folder', type=Path,
-                             help='Folder containing data/ and original/ subdirectories')
+    hide_parser.add_argument('carrier', type=Path,
+                             help='Carrier file (image, video, PDF, etc.)')
+    hide_parser.add_argument('data', type=Path,
+                             help='File or folder to hide')
     hide_parser.add_argument('-o', '--output', type=Path, required=True,
                              help='Output file path')
     hide_parser.add_argument('-p', '--password', type=str,

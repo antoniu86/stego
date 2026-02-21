@@ -33,26 +33,22 @@ python3 cli/cli.py --help
 
 ## Usage
 
-### Folder structure
-
-The `hide` command expects this layout:
-
-```
-my_folder/
-├── data/       ← files to hide (subdirectories allowed)
-└── original/   ← exactly one carrier file (image, video, PDF…)
-```
-
 ### Hide data
 
 ```bash
-stego hide my_folder -o output.jpg
+# Hide a single file
+stego hide photo.jpg secret.txt -o hidden.jpg
+
+# Hide an entire folder
+stego hide photo.jpg secrets/ -o hidden.jpg
 ```
 
-Options:
+Arguments:
 
-| Flag | Description |
-|------|-------------|
+| Argument | Description |
+|----------|-------------|
+| `carrier` | The file to use as carrier (image, video, PDF, etc.) |
+| `data` | File or folder to hide |
 | `-o FILE` | Output file (required) |
 | `-p PASSWORD` | Password (prompted if omitted) |
 | `-v` | Verbose output |
@@ -102,13 +98,11 @@ Options:
 ## Quick example
 
 ```bash
-# Prepare folder
-mkdir -p project/data project/original
-cp secret.txt project/data/
-cp photo.jpg project/original/
+# Hide a file
+stego hide photo.jpg secret.txt -o hidden.jpg
 
-# Hide
-stego hide project -o hidden.jpg
+# Hide a folder
+stego hide photo.jpg secrets/ -o hidden.jpg
 
 # Verify
 stego scan hidden.jpg
