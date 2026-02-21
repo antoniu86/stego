@@ -91,6 +91,10 @@ def hide_command(args):
         if not password:
             print("Error: Password cannot be empty", file=sys.stderr)
             return 1
+        confirm = getpass.getpass('Confirm encryption password: ')
+        if password != confirm:
+            print("Error: Passwords do not match", file=sys.stderr)
+            return 1
 
     def progress(step, message):
         if args.verbose:
