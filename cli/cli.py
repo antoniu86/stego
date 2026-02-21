@@ -262,14 +262,15 @@ def main():
         epilog="""
 Examples:
   Hide data:
-    stego hide /path/to/folder -o output.jpg
+    stego hide photo.jpg secret.txt -o hidden.jpg
+    stego hide photo.jpg secrets/ -o hidden.jpg
 
   Extract data:
-    stego show hidden_file.jpg -o /path/to/output
+    stego show hidden.jpg -o recovered/
 
   Scan files:
-    stego scan /path/to/files -r -v
-    stego scan image.png
+    stego scan hidden.jpg
+    stego scan ~/Downloads -r -v
         """
     )
 
