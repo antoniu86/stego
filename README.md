@@ -45,6 +45,13 @@ stego hide photo.jpg secret.txt -o hidden.jpg
 stego hide photo.jpg secrets/ -o hidden.jpg
 ```
 
+When no `-p` flag is given, you will be prompted to enter and confirm the password:
+
+```
+Enter encryption password:
+Confirm encryption password:
+```
+
 Arguments:
 
 | Argument | Description |
@@ -52,7 +59,7 @@ Arguments:
 | `carrier` | The file to use as carrier (image, video, PDF, etc.) |
 | `data` | File or folder to hide |
 | `-o FILE` | Output file (required) |
-| `-p PASSWORD` | Password (prompted if omitted) |
+| `-p PASSWORD` | Password (skips confirmation prompt — use with care) |
 | `-v` | Verbose output |
 
 ### Extract hidden data
