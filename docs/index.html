@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Stego | Secure Data Hiding</title>
+
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iIzYzNjZmMSI+PHBhdGggZD0iTTEyIDJMMyA1djZjMCA1LjU1IDMuODQgMTAuNzMgOSA3LjMzIDUuMTYtMy40MSA5LTguNTkgOS03LjMzVjVMMTIgMnpNMTEgN2gydjJoLTJWN3ptMCA0aDJ2N2gtMlYxMXoiLz48L3N2Zz4=">
+
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -17,12 +20,16 @@
             z-index: -1;
         }
         .glass-card {
-            background: rgba(15, 23, 42, 0.7);
-            backdrop-filter: blur(20px);
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(24px);
             border: 1px solid rgba(99, 102, 241, 0.2);
         }
         .hero-glow {
-            box-shadow: 0 0 100px 20px rgba(79, 70, 229, 0.1);
+            box-shadow: 0 0 100px 10px rgba(79, 70, 229, 0.15);
+        }
+        .font-mono-tight {
+            font-family: 'Fira Code', 'Courier New', monospace;
+            letter-spacing: -0.05em;
         }
     </style>
 </head>
@@ -32,11 +39,11 @@
 
     <nav class="max-w-6xl mx-auto px-6 py-8 flex justify-between items-center relative z-10">
         <div class="text-2xl font-black tracking-tighter text-white flex items-center gap-2">
-            <span class="bg-indigo-600 p-1 rounded">ST</span> EGO
+            <i class="fas fa-user-secret text-indigo-500"></i> stego
         </div>
         <div class="flex items-center gap-8">
-            <a href="https://github.com/antoniu86/stego" class="bg-white text-slate-950 px-5 py-2 rounded font-bold text-sm hover:bg-indigo-400 hover:text-white transition">
-                <i class="fab fa-github mr-2"></i> See the Repo
+            <a href="https://github.com/antoniu86/stego" class="bg-indigo-600 text-white px-5 py-2 rounded-lg font-bold text-sm hover:bg-indigo-500 transition shadow-lg shadow-indigo-500/30">
+                View Project
             </a>
         </div>
     </nav>
@@ -44,55 +51,60 @@
     <main class="max-w-5xl mx-auto px-6 pt-12 pb-24 relative z-10">
         
         <section class="mb-16">
-            <div class="inline-block px-3 py-1 rounded-full border border-indigo-500/30 bg-indigo-500/10 text-indigo-400 text-xs font-bold mb-6">
-                AES-256-CBC ENCRYPTION
-            </div>
-            <h1 class="text-6xl md:text-8xl font-bold mb-8 tracking-tight text-white leading-none">
-                Encryption in <br><span class="text-indigo-500">Plain Sight.</span>
+            <h1 class="text-6xl md:text-8xl font-bold mb-8 tracking-tighter text-white leading-none">
+                Hide. Encrypt.<br><span class="text-indigo-500">Protect.</span>
             </h1>
-            <p class="text-xl text-slate-400 max-w-xl mb-10 leading-relaxed">
-                Hide files or folders inside images, videos, and PDFs without changing how they appear to the world.
+            <p class="text-xl text-slate-400 max-w-2xl mb-10 leading-relaxed font-light">
+                A lightweight tool to append encrypted data to any carrier file. 
+                Images, videos, and PDFs remain fully functional while hiding your secrets.
             </p>
         </section>
 
-        <div class="grid lg:grid-cols-5 gap-8 items-start mb-20">
-            <div class="lg:col-span-3 glass-card rounded-xl overflow-hidden shadow-2xl hero-glow">
-                <div class="bg-slate-800/50 px-5 py-3 border-b border-white/10 flex justify-between items-center">
-                    <span class="text-xs font-mono text-indigo-400">Terminal — stego_cli</span>
+        <div class="grid lg:grid-cols-6 gap-8 items-stretch mb-20">
+            <div class="lg:col-span-4 glass-card rounded-xl overflow-hidden shadow-2xl hero-glow flex flex-col">
+                <div class="bg-slate-800/40 px-5 py-3 border-b border-white/5 flex justify-between items-center">
+                    <span class="text-xs font-mono text-slate-500 uppercase tracking-widest">Active Session: stego-cli</span>
                     <div class="flex gap-1.5">
-                        <div class="w-2.5 h-2.5 rounded-full bg-slate-700"></div>
-                        <div class="w-2.5 h-2.5 rounded-full bg-slate-700"></div>
+                        <div class="w-2.5 h-2.5 rounded-full bg-indigo-500/20"></div>
+                        <div class="w-2.5 h-2.5 rounded-full bg-indigo-500/40"></div>
                     </div>
                 </div>
-                <div class="p-8 font-mono text-sm md:text-base leading-relaxed">
-                    <div class="mb-6">
-                        <span class="text-slate-500"># Hide encrypted data</span><br>
-                        <span class="text-white">stego hide photo.jpg secret.txt -o hidden.jpg</span>
+                <div class="p-8 font-mono-tight text-sm md:text-base leading-relaxed flex-grow">
+                    <div class="mb-8">
+                        <span class="text-indigo-400 font-bold">$ stego hide</span> photo.jpg data/ <span class="text-indigo-400">-o</span> vault.jpg
+                        <div class="text-slate-500 text-xs mt-1">> Enter encryption password...</div>
                     </div>
-                    <div class="mb-6">
-                        <span class="text-slate-500"># Extract data from carrier</span><br>
-                        <span class="text-white">stego show hidden.jpg -o ./recovered/</span>
+                    <div class="mb-8">
+                        <span class="text-indigo-400 font-bold">$ stego scan</span> vault.jpg
+                        <div class="text-emerald-500 text-xs mt-1">> Payload detected (AES-256)</div>
                     </div>
-                    <div class="text-indigo-400 italic">PBKDF2-HMAC-SHA256 initialized...</div>
+                    <div>
+                        <span class="text-indigo-400 font-bold">$ stego show</span> vault.jpg <span class="text-indigo-400">-o</span> ./out/
+                        <div class="text-slate-500 text-xs mt-1">> Extraction complete. SHA-256 verified.</div>
+                    </div>
                 </div>
             </div>
 
-            <div class="lg:col-span-2 space-y-4">
-                <div class="glass-card p-6 rounded-xl">
-                    <h3 class="font-bold text-white mb-2 underline decoration-indigo-500">Invisible to Users</h3>
-                    <p class="text-sm text-slate-400">Carrier files remain fully functional and open in standard viewers.</p>
+            <div class="lg:col-span-2 space-y-4 flex flex-col">
+                <div class="glass-card p-6 rounded-xl flex-grow border-l-4 border-l-indigo-500">
+                    <h3 class="font-bold text-white mb-2">AES-256 Security</h3>
+                    <p class="text-xs text-slate-400 leading-normal italic">PBKDF2-HMAC-SHA256 with 100,000 iterations for key derivation.</p>
                 </div>
-                <div class="glass-card p-6 rounded-xl">
-                    <h3 class="font-bold text-white mb-2 underline decoration-indigo-500">High Security</h3>
-                    <p class="text-sm text-slate-400">100,000 iterations and SHA-256 checksums ensure data integrity.</p>
+                <div class="glass-card p-6 rounded-xl flex-grow border-l-4 border-l-emerald-500">
+                    <h3 class="font-bold text-white mb-2">Universal Carriers</h3>
+                    <p class="text-xs text-slate-400 leading-normal">Works with any file format—JPG, MP4, PDF, and more.</p>
+                </div>
+                <div class="glass-card p-6 rounded-xl flex-grow border-l-4 border-l-amber-500">
+                    <h3 class="font-bold text-white mb-2">Non-Destructive</h3>
+                    <p class="text-xs text-slate-400 leading-normal">The original carrier content is never modified or corrupted.</p>
                 </div>
             </div>
         </div>
     </main>
 
-    <footer class="max-w-5xl mx-auto px-6 py-12 border-t border-white/5 flex justify-between items-center text-slate-500 text-sm">
-        <p>© 2026 Stego Project by <a href="https://github.com/antoniu86" class="text-white hover:text-indigo-400 transition">antoniu86</a></p>
-    </footer>
+    <footer class="max-w-5xl mx-auto px-6 py-12 border-t border-white/5 flex flex-col md:flex-row justify-between items-center text-slate-500 text-sm">
+        <p class="mb-4 md:mb-0">Created by <a href="https://github.com/antoniu86" class="text-white hover:text-indigo-400">antoniu86</a></p>
+     </footer>
 
     <script>
         const canvas = document.getElementById('data-canvas');
@@ -100,21 +112,31 @@
 
         let width, height;
         let streams = [];
-        const chars = '0123456789ABCDEF';
+        const chars = '0123456789ABCDEFabcdef';
 
         function init() {
             width = canvas.width = window.innerWidth;
             height = canvas.height = window.innerHeight;
             streams = [];
-            // Create rows of data
-            for (let i = 0; i < height / 25; i++) {
+            
+            // Increased density: one stream every 20px
+            for (let i = 0; i < height / 20; i++) {
+                // Determine direction based on row (even/odd) or random
+                const isRight = Math.random() > 0.5;
                 streams.push({
                     x: Math.random() * width,
-                    y: i * 25,
-                    speed: (Math.random() - 0.5) * 4, // Left or right movement
-                    length: Math.floor(Math.random() * 20) + 10,
-                    opacity: Math.random() * 0.3
+                    y: i * 20,
+                    speed: (Math.random() * 0.5 + 0.2) * (isRight ? 1 : -1),
+                    // Long strings: 60 to 120 characters
+                    length: Math.floor(Math.random() * 60) + 60,
+                    opacity: Math.random() * 0.08 + 0.02, // Very subtle background
+                    content: ""
                 });
+                
+                // Pre-generate initial string content
+                for(let j=0; j<streams[i].length; j++) {
+                    streams[i].content += chars.charAt(Math.floor(Math.random() * chars.length));
+                }
             }
         }
 
@@ -122,24 +144,27 @@
             ctx.fillStyle = '#020617';
             ctx.fillRect(0, 0, width, height);
             
-            ctx.font = '12px monospace';
+            ctx.font = '10px monospace';
 
             streams.forEach(stream => {
                 ctx.fillStyle = `rgba(99, 102, 241, ${stream.opacity})`;
                 
-                let text = "";
-                for(let j=0; j<stream.length; j++) {
-                    text += chars.charAt(Math.floor(Math.random() * chars.length));
+                // Occasionally mutate characters to look "active"
+                if(Math.random() > 0.95) {
+                    const pos = Math.floor(Math.random() * stream.length);
+                    const newChar = chars.charAt(Math.floor(Math.random() * chars.length));
+                    stream.content = stream.content.substring(0, pos) + newChar + stream.content.substring(pos + 1);
                 }
-                
-                ctx.fillText(text, stream.x, stream.y);
+
+                ctx.fillText(stream.content, stream.x, stream.y);
 
                 // Movement
                 stream.x += stream.speed;
 
-                // Wrap around logic
-                if (stream.x > width) stream.x = -150;
-                if (stream.x < -150) stream.x = width;
+                // Wrap around with buffer for long string length
+                const totalWidth = stream.length * 6; // Rough estimate of pixel width
+                if (stream.x > width) stream.x = -totalWidth;
+                if (stream.x < -totalWidth) stream.x = width;
             });
 
             requestAnimationFrame(draw);
