@@ -1,0 +1,11 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Steganography Tool
+GenericName=Data Hiding Tool
+Comment=Hide and extract encrypted data in files
+Exec=stego-gui
+Icon=security-high
+Terminal=false
+Categories=Utility;Security;
+Keywords=steganography;encryption;hide;security;stego;privacy;
