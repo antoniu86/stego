@@ -1,6 +1,6 @@
 #!/bin/bash
-# install.sh — Install stego system-wide (requires sudo)
-# Normal users can run the scripts directly from the stego/ folder without installing.
+# install.sh — Install or update stego system-wide (requires sudo)
+# Normal users can run the scripts directly from the cli/ folder without installing.
 
 set -e
 
@@ -40,8 +40,24 @@ for f in core.py cli.py __init__.py; do
     fi
 done
 
+# ── Fresh install or update? ───────────────────────────────────────────────────
 echo ""
-echo -e "${BOLD}Stego — System Installer${RESET}"
+if [[ -f "${BIN_DIR}/stego" ]]; then
+    echo -e "${BOLD}Stego — Update${RESET}"
+    echo "An existing installation was found at ${INSTALL_DIR}."
+    echo ""
+    read -r -p "Update stego to the current version? [Y/n] " choice
+    choice="${choice:-Y}"
+    if [[ ! "$choice" =~ ^[Yy]$ ]]; then
+        echo "Aborted."
+        exit 0
+    fi
+    MODE="update"
+else
+    echo -e "${BOLD}Stego — System Installer${RESET}"
+    MODE="install"
+fi
+
 echo "Installing to: ${INSTALL_DIR}"
 echo "Command:       ${BIN_DIR}/stego"
 echo ""
@@ -91,10 +107,14 @@ info "Registered: stego"
 
 # ── Done ───────────────────────────────────────────────────────────────────────
 echo ""
-echo -e "${GREEN}${BOLD}Installation complete!${RESET}"
+if [[ "$MODE" == "update" ]]; then
+    echo -e "${GREEN}${BOLD}Update complete!${RESET}"
+else
+    echo -e "${GREEN}${BOLD}Installation complete!${RESET}"
+fi
 echo ""
 echo "  stego --help"
-echo "  stego hide my_folder -o output.jpg"
-echo "  stego show output.jpg -o recovered/"
+echo "  stego hide photo.jpg secret.txt -o hidden.jpg"
+echo "  stego show hidden.jpg -o recovered/"
 echo "  stego scan /path/to/files -r"
 echo ""

@@ -11,6 +11,8 @@ Copies the scripts to `/usr/local/share/stego/` and registers `stego` in `/usr/l
 sudo bash install.sh
 ```
 
+If `stego` is already installed the script will detect it and prompt you to update — just press Enter to confirm.
+
 To uninstall:
 
 ```bash
